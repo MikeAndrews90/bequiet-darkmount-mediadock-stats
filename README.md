@@ -2,6 +2,8 @@
 
 Displays live system stats on the be quiet! Dark Mount keyboard's media dock LCD, updated every 20 seconds.
 
+![preview](preview.png)
+
 Shows: clock, CPU %, RAM % + usage, GPU %, VRAM %, GPU temperature.
 
 ## How it works
