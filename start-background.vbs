@@ -1,3 +1,5 @@
-Dim shell
+Dim shell, fso, scriptDir
 Set shell = CreateObject("WScript.Shell")
-shell.Run "cmd /c cd /d E:\Dev\keyboard-stats && node automate.js >> automate.log 2>&1", 0, False
+Set fso = CreateObject("Scripting.FileSystemObject")
+scriptDir = fso.GetParentFolderName(WScript.ScriptFullName)
+shell.Run "cmd /c cd /d """ & scriptDir & """ && node automate.js >> automate.log 2>&1", 0, False
