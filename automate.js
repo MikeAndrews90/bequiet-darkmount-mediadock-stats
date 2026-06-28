@@ -191,7 +191,9 @@ async function main() {
     viewport: { width: 1400, height: 900 },
   });
 
-  const page = await context.newPage();
+  // Reuse the blank tab Playwright opens rather than creating a second one
+  const pages = context.pages();
+  const page = pages.length > 0 ? pages[0] : await context.newPage();
 
   try {
     await page.goto(SITE_URL, { waitUntil: 'domcontentloaded', timeout: 30_000 });

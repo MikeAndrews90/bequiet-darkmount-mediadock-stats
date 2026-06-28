@@ -40,7 +40,7 @@ The keyboard permission is saved in `.chromium-profile/` so subsequent runs are 
 
 ## Normal usage (background)
 
-Double-click `start-background.vbs` — no windows appear. The browser runs minimised in the taskbar and stats update every 20 seconds.
+Double-click `start-background.vbs`. A browser window will briefly appear while it connects to the keyboard, then automatically minimise to the taskbar. Stats update every 20 seconds from that point.
 
 Logs are written to `automate.log`.
 
