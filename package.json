@@ -1,0 +1,15 @@
+{
+  "name": "keyboard-stats",
+  "version": "1.0.0",
+  "description": "Generates system stats image for be quiet! Dark Mount media dock",
+  "main": "generate.js",
+  "scripts": {
+    "start": "node generate.js",
+    "upload": "node automate.js"
+  },
+  "dependencies": {
+    "playwright": "^1.61.1",
+    "sharp": "^0.32.6",
+    "systeminformation": "^5.22.11"
+  }
+}

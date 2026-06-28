@@ -1,0 +1,6 @@
+node_modules/
+.chromium-profile/
+.claude/
+current.png
+automate.log
+debug-screenshot.png
