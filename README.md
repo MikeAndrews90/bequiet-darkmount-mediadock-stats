@@ -54,6 +54,14 @@ taskkill /f /im node.exe
 
 To check on it or intervene, click the Chromium icon in the taskbar or open `http://localhost:9222` in any Chrome window for remote DevTools.
 
+## Run on startup
+
+To have it start automatically at login, add a shortcut to `start-background.vbs` in your Startup folder:
+
+1. Press `Win+R`, type `shell:startup`, hit Enter — this opens your Startup folder.
+2. Right-click `start-background.vbs` → **Create shortcut**.
+3. Move that shortcut into the Startup folder that opened.
+
 ## Configuration
 
 Edit the top of `automate.js`:
