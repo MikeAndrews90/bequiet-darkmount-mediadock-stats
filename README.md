@@ -16,6 +16,7 @@ A Node.js script generates a stats image as a PNG, then uses browser automation 
 - Node.js 18+
 - A be quiet! Dark Mount keyboard
 - NVIDIA GPU recommended — GPU %, VRAM %, and temperature are read via `nvidia-smi`. The display degrades gracefully if it isn't found (CPU and RAM still show).
+- The desktop IO Center app must be closed. It holds exclusive access to the keyboard over HID, so the browser version (and this script) can't connect while it's running.
 
 ## Installation
 

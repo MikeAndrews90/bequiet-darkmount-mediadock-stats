@@ -11,8 +11,12 @@ const path = require('path');
 // PNG written here; IO Center reads it, creates its own UUID copy, pushes to keyboard
 const CURRENT_IMAGE = path.join(__dirname, 'current.png');
 
-const W = 512;
-const H = 640;
+// Media dock display is landscape 4:3 (app reports "Minimum size 320x240").
+// 640x480 is confirmed to scale in cleanly. The bezel/display also clips
+// roughly the outer 5px on the left and 9-10px on the bottom, so layout
+// below keeps clear margins on those edges.
+const W = 640;
+const H = 480;
 
 // Colours — red accent matches be quiet! branding (#ff2800 from profile)
 const BG      = '#0a0a0f';
@@ -97,7 +101,9 @@ function buildSvg(s, now) {
     weekday: 'short', day: '2-digit', month: 'short'
   });
 
-  const px = 40;
+  // Side padding only needs to clear the ~5px left-edge crop (plus a small
+  // buffer) — kept tight so the tiny 4:3 panel is used edge-to-edge.
+  const px = 14;
   const bw = W - px * 2;
 
   const hasGpu = s.gpuTemp !== null || s.gpuLoadPct !== null;
@@ -107,45 +113,45 @@ function buildSvg(s, now) {
   <rect width="${W}" height="${H}" fill="${BG}"/>
 
   <!-- ── Clock ── -->
-  <text x="${W/2}" y="72"
-        text-anchor="middle" font-family="monospace" font-size="72" font-weight="bold"
+  <text x="${W/2}" y="54"
+        text-anchor="middle" font-family="monospace" font-size="64" font-weight="bold"
         fill="${WHITE}">${hh}:${mm}</text>
-  <text x="${W/2}" y="106"
-        text-anchor="middle" font-family="monospace" font-size="30"
+  <text x="${W/2}" y="88"
+        text-anchor="middle" font-family="monospace" font-size="28"
         fill="${DIM}">${dateStr}</text>
 
-  <line x1="${px}" y1="124" x2="${W-px}" y2="124" stroke="${DIVIDER}" stroke-width="5"/>
+  <line x1="${px}" y1="106" x2="${W-px}" y2="106" stroke="${DIVIDER}" stroke-width="4"/>
 
   <!-- ── CPU ── -->
-  <text x="${px}" y="162" font-family="monospace" font-size="40" fill="${RED}">CPU</text>
-  <text x="${W-px}" y="162" text-anchor="end" font-family="monospace" font-size="40" fill="${WHITE}">${s.cpuPct}%</text>
-  ${bar(px, 170, bw, 14, s.cpuPct, RED)}
+  <text x="${px}" y="144" font-family="monospace" font-size="42" fill="${RED}">CPU</text>
+  <text x="${W-px}" y="144" text-anchor="end" font-family="monospace" font-size="42" fill="${WHITE}">${s.cpuPct}%</text>
+  ${bar(px, 154, bw, 16, s.cpuPct, RED)}
 
   <!-- ── RAM ── -->
-  <text x="${px}" y="234" font-family="monospace" font-size="40" fill="${BLUE}">RAM</text>
-  <text x="${W-px}" y="234" text-anchor="end" font-family="monospace" font-size="40" fill="${WHITE}">${s.ramPct}%</text>
-  ${bar(px, 242, bw, 14, s.ramPct, BLUE)}
-  <text x="${px}" y="286" font-family="monospace" font-size="30" fill="${DIM}">${s.ramUsedGB} / ${s.ramTotGB} GB</text>
+  <text x="${px}" y="216" font-family="monospace" font-size="42" fill="${BLUE}">RAM</text>
+  <text x="${W-px}" y="216" text-anchor="end" font-family="monospace" font-size="42" fill="${WHITE}">${s.ramPct}%</text>
+  ${bar(px, 226, bw, 16, s.ramPct, BLUE)}
+  <text x="${px}" y="266" font-family="monospace" font-size="24" fill="${DIM}">${s.ramUsedGB} / ${s.ramTotGB} GB</text>
 
   ${hasGpu ? `
-  <line x1="${px}" y1="303" x2="${W-px}" y2="303" stroke="${DIVIDER}" stroke-width="5"/>
+  <line x1="${px}" y1="284" x2="${W-px}" y2="284" stroke="${DIVIDER}" stroke-width="4"/>
 
   <!-- ── GPU ── -->
   ${s.gpuLoadPct !== null ? `
-  <text x="${px}" y="343" font-family="monospace" font-size="40" fill="${GREEN}">GPU</text>
-  <text x="${W-px}" y="343" text-anchor="end" font-family="monospace" font-size="40" fill="${WHITE}">${Math.round(s.gpuLoadPct)}%</text>
-  ${bar(px, 351, bw, 14, s.gpuLoadPct, GREEN)}
+  <text x="${px}" y="322" font-family="monospace" font-size="42" fill="${GREEN}">GPU</text>
+  <text x="${W-px}" y="322" text-anchor="end" font-family="monospace" font-size="42" fill="${WHITE}">${Math.round(s.gpuLoadPct)}%</text>
+  ${bar(px, 332, bw, 16, s.gpuLoadPct, GREEN)}
   ` : ''}
 
   ${s.gpuMemPct !== null ? `
-  <text x="${px}" y="415" font-family="monospace" font-size="40" fill="#a060ff">VRAM</text>
-  <text x="${W-px}" y="415" text-anchor="end" font-family="monospace" font-size="40" fill="${WHITE}">${Math.round(s.gpuMemPct)}%</text>
-  ${bar(px, 423, bw, 14, s.gpuMemPct, '#a060ff')}
+  <text x="${px}" y="394" font-family="monospace" font-size="42" fill="#a060ff">VRAM</text>
+  <text x="${W-px}" y="394" text-anchor="end" font-family="monospace" font-size="42" fill="${WHITE}">${Math.round(s.gpuMemPct)}%</text>
+  ${bar(px, 404, bw, 16, s.gpuMemPct, '#a060ff')}
   ` : ''}
 
   ${s.gpuTemp !== null ? `
-  <text x="${px}" y="475" font-family="monospace" font-size="30" fill="${DIM}">GPU temp</text>
-  <text x="${W-px}" y="475" text-anchor="end" font-family="monospace" font-size="40" fill="${tcGpu}">${s.gpuTemp}°C</text>
+  <text x="${px}" y="452" font-family="monospace" font-size="24" fill="${DIM}">GPU temp</text>
+  <text x="${W-px}" y="452" text-anchor="end" font-family="monospace" font-size="42" fill="${tcGpu}">${s.gpuTemp}°C</text>
   ` : ''}
   ` : ''}
 
